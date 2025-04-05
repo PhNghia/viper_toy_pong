@@ -60,42 +60,6 @@ I
 Toy Pong: tạo cây với hiệu suất tốt nhất
 python main.py train-viper --env-name ToyPong-v0 --n-env 4 --max-depth 20  --max-leaves 587 --total-timesteps 1_000_000 
 
-🔹 Tổng số bước kiểm tra: 10000
-⚠️ Số lần PPO và VIPER khác nhau: 1892
-📉 Tỉ lệ khác biệt: 18.92%
-⚠️ Cây quyết định CÓ SỰ KHÁC BIỆT đáng kể so với chính sách gốc.
-
-
-Mỗi đặc trưng đóng góp mức độ khác nhau vào quyết định của cây. Một đặc trưng quan trọng nếu:
-Thường xuyên được chọn để phân nhánh sớm trong cây.
-Góp phần lớn vào việc giảm độ hỗn loạn (entropy) hoặc giảm Gini impurity.
-🔹 Trong sklearn, tầm quan trọng của đặc trưng (feature_importances_) được tính bằng:
-Tổng lượng giảm độ hỗn loạn do đặc trưng đó mang lại trên tất cả các lần nó xuất hiện trong cây.
-
-bao nhieu luat
-luay yeu co the bo hay ko..
-
-- Luật
-+ Số luật: số luật = số node lá, phụ thuộc vào max_depth, max_leaf_nodes và thuật toán phân nhánh entropy
-    => đếm số node lá, kiểm tra số luật khi tăng ccp_alpha hoặc giảm max_leaf_nodes
-+ Luật yếu: là những nhãnh có ít mẫu dữ liệu (samples) hoặc entropy gần bằng 0
-Khi bỏ luật yếu, trạng thái thuộc về luật đó sẽ:    
-    Được gán về một nhánh tổng quát hơn (nếu pruning nhẹ)
-    Không có nhánh phù hợp (pruning quá mạnh), khi đó agent chọn hành động từ node gần nhất
-+ Thực nghiệm:
-    So sánh kết quả khi chạy với ccp_alpha = 0.0001 và giá trị lớn hơn
-    Kiểm tra có trạng thái nào bị mất quyết định không (so sánh action trước và sau pruning)
-+ Cách thực nghiệm
-    Chạy agent với cây gốc (không pruning) -> đo hiệu suất
-    Tăng dần ccp_alpha để loại bỏ luật yếu -> quan sát thay đổi
-    Kiểm tra nếu agent vẫn chơi tốt hoặc hiệu suất giảm
-    Nếu hiệu suất giảm mạnh -> giảm pruning để giữ lại những luật quan trọng
-+ Mục tiêu thực nghiệm
-    Tìm giá trị ccp_alpha tối ưu giúp giảm số luật nhưng vẫn giữ hiệu suất cao
-    Xác định mức pruning tối đa mà agent vẫn hoạt động tốt
-    Kiểm tra xem agent có gặp trạng thái không xử lý được khi bỏ quá nhiều luật hay không.
-
-
 1. Không pruning
 - `entropy` split criterion
 - `ccp_alpha=0`,  # Không pruning
@@ -105,6 +69,11 @@ Khi bỏ luật yếu, trạng thái thuộc về luật đó sẽ:
     
 python main.py train-viper --verbose 2 --env-name ToyPong-v0 --n-env 4 --ccp-alpha 0 --total-timesteps 1_000_000 
 
-2. Sử dụng pruning
-python main.py train-viper --verbose 2 --env-name ToyPong-v0 --n-env 4 --ccp-alpha 0.0001 --total-timesteps 1_000_000 
+2. Huấn luyện lại cây và có pruning
+- Điều chỉnh các thông số ccp_alpha, max_depth, max_leaf_nodes
+python pruning_tree.py
+
+3. So sánh cây gốc và cây cắt tỉa
+- Thêm mô hình cây cần so sánh
+python view_compare_multi.py
 
