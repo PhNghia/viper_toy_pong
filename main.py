@@ -70,7 +70,7 @@ if __name__ == "__main__":
         help="Number of iterations of Viper")
     # me begin
     train_viper.add_argument(
-        "--ccp-alpha", type=float, default=0.0001,
+        "--ccp-alpha", type=float, default=0.0,
         help="pruning")
     # me end
     train_viper.add_argument(
