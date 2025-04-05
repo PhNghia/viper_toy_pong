@@ -68,6 +68,11 @@ if __name__ == "__main__":
     train_viper.add_argument(
         "--n-iter", type=int, default=80,
         help="Number of iterations of Viper")
+    # me begin
+    train_viper.add_argument(
+        "--ccp-alpha", type=float, default=0.0001,
+        help="pruning")
+    # me end
     train_viper.add_argument(
         "--max-leaves", type=int, default=None,
         help="Maximum number of leave nodes to use for the extracted decision tree")

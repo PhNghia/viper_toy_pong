@@ -1,0 +1,7 @@
+Thuộc tính,Cây gốc,Cây đã cắt tỉa 1,Cây đã cắt tỉa 2,Cây đã cắt tỉa 3
+Độ sâu cây,37,24,29,29
+Số nút lá,13901,682,6264,11120
+Số nút tổng,27801,1363,12527,22239
+Chi phí cắt tỉa (ccp_alpha),0.0,0.0001,1e-05,1e-06
+Độ chính xác trên dữ liệu huấn luyện,0.960722,0.887123,0.962331,0.978242
+Độ chính xác trên dữ liệu kiếm tra,0.935249,0.859132,0.930879,0.941808

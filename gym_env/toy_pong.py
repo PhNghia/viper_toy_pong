@@ -21,7 +21,7 @@ class ToyPong(gym.Env):
     # Must always be > max_speed to prevent ball from passing through paddle
     paddle_height = 2.5
 
-    max_timesteps = 250
+    max_timesteps = 2000
 
     metadata = {
         "render_modes": ["human"],
@@ -42,29 +42,33 @@ class ToyPong(gym.Env):
                                          [self.width, self.width, self.height, self.max_speed, self.max_speed],
                                          dtype=np.float32))
 
-        self.paddle_x = self.width / 2
-        self.ball_pos_x = self.width / 2
-        if args.rand_ball_start:
-            self.ball_pos_x = np.random.uniform(0, self.width / 2)
+        # self.paddle_x = self.width / 2 me
+        # self.ball_pos_x = self.width / 2
+        # if args.rand_ball_start:
+        #     self.ball_pos_x = np.random.uniform(0, self.width / 2)
 
-        self.ball_pos_y = np.random.uniform(0, self.height / 2)
-        self.ball_vel_x = self.rand_vel()
-        self.ball_vel_y = self.rand_vel()
-        self.t = 0
+        # self.ball_pos_y = np.random.uniform(0, self.height / 2)
+        # self.ball_vel_x = self.rand_vel()
+        # self.ball_vel_y = self.rand_vel()
+        # self.t = 0
         self.window = None
         self.clock = None
-        self.ball_vel_x = 0.166
-        self.ball_vel_y = 1.669
-        self.ball_pos_y = 10
-        self.ball_pos_x = 29.686
-        self.paddle_x = 15
+        # self.ball_vel_x = 0.166 
+        # self.ball_vel_y = 1.669
+        # self.ball_pos_y = 10
+        # self.ball_pos_x = 29.686
+        # self.paddle_x = 15
         self.observations = []
         self.actions = []
 
     def rand_vel(self):
         return np.random.uniform(self.min_speed, self.max_speed) * np.random.choice([-1, 1])
 
+    def seed(self, seed=None):
+        np.random.seed(seed)
+
     def reset(self):
+        self.seed()
         self.paddle_x = self.width / 2
         self.ball_pos_x = self.width / 2
         if self.args.rand_ball_start:
@@ -74,7 +78,7 @@ class ToyPong(gym.Env):
         self.ball_vel_y = self.rand_vel()
 
         self.t = 0
-        self.window = None
+        self.window = None  
 
         if self.render_mode == "human":
             self.render()

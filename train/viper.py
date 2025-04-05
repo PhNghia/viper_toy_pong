@@ -1,5 +1,6 @@
 import warnings
 
+import joblib
 import gym
 import numpy as np
 import torch
@@ -10,7 +11,7 @@ from stable_baselines3.common.base_class import BaseAlgorithm
 from tqdm import tqdm
 
 from gym_env import make_env
-from model.paths import get_oracle_path, get_viper_path
+from model.paths import get_oracle_path, get_viper_path, get_viper_dataset_path
 from model.tree_wrapper import TreeWrapper
 from test.evaluate import evaluate_policy
 from train.oracle import get_model_cls
@@ -27,8 +28,9 @@ def train_viper(args):
     for i in tqdm(range(args.n_iter), disable=args.verbose > 0):
         beta = 1 if i == 0 else 0
         dataset += sample_trajectory(args, policy, beta)
-
-        clf = DecisionTreeClassifier(ccp_alpha=0.0001, criterion="entropy", max_depth=args.max_depth,
+        # clf = DecisionTreeClassifier(ccp_alpha=0.0001, criterion="entropy", max_depth=args.max_depth,
+        #                              max_leaf_nodes=args.max_leaves)
+        clf = DecisionTreeClassifier(ccp_alpha=args.ccp_alpha, criterion="entropy", max_depth=args.max_depth,
                                      max_leaf_nodes=args.max_leaves)
         x = np.array([traj[0] for traj in dataset])
         y = np.array([traj[1] for traj in dataset])
@@ -53,6 +55,10 @@ def train_viper(args):
     wrapper = TreeWrapper(best_policy)
     wrapper.print_info()
     wrapper.save(path)
+    # me
+    dataset_path = get_viper_dataset_path(args)
+    joblib.dump(dataset, dataset_path)
+    
 
 
 def load_oracle_env(args):

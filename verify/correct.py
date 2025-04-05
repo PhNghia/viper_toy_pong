@@ -2,7 +2,7 @@ import math
 import time
 
 import numpy as np
-from itertools import pairwise
+# from itertools import pairwise
 
 from z3 import RealVector, And, Implies, Or, sat, If, Solver, Not
 
@@ -13,6 +13,14 @@ from model.tree_wrapper import TreeWrapper
 
 from sklearn.tree import _tree
 
+# me
+from itertools import tee
+
+def pairwise(iterable):
+    a, b = tee(iterable)
+    next(b, None)
+    return zip(a, b)
+# me
 
 # https://scikit-learn.org/stable/auto_examples/tree/plot_unveil_tree_structure.html#tree-structure
 # Extract rules: https://stackoverflow.com/a/39772170
